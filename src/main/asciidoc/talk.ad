@@ -1,0 +1,21 @@
+:icons: font
+:twitter-tag: UDE
+:conference-tag:
+:talk-tag: Android Persistence
+:linkattrs:
+ifndef::partials[:partials: partials]
+
+include::{partials}/footer.ad[]
+
+== Persistencia en Android
+
+//== !
+//image::pattern-design-4pwbdv1y.jpg[background, size=auto]
+// Fuente: https://standaserigraf.wordpress.com/2015/09/30/pattern-design-tecnica-artistica-que-se-ocupa-de-la-creacion-de-patrones-graficos/
+== Alternativas de persistencia en Android
+
+* SQLite
+* SharedPreferences
+* Almacenamiento Interno/Externo
+
+include::{partials}/self.ad[]
