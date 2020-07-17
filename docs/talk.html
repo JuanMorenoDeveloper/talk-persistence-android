@@ -28,7 +28,36 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if 
     <span class="element">Android Persistence</span>
 </div>
 <section id="_persistencia_en_android"><h2>Persistencia en Android</h2></section>
-<section id="_alternativas_de_persistencia_en_android"><h2>Alternativas de persistencia en Android</h2><div class="ulist"><ul><li><p>SQLite</p></li><li><p>SharedPreferences</p></li><li><p>Almacenamiento Interno/Externo</p></li></ul></div></section>
+<section id="_alternativas_de_persistencia_en_android"><h2>Alternativas de persistencia en Android</h2><div class="ulist"><ul><li><p>SQLite</p></li><li><p>SharedPreferences</p></li><li><p>Almacenamiento Interno/Externo</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Alternativas para persistir datos en el dispositivo Android</p></div>
+<div class="ulist"><ul><li><p>SQLite</p><div class="ulist"><ul><li><p>Datos son privados</p></li><li><p>Datos estructurados</p></li></ul></div></li><li><p>SharedPreferences</p><div class="ulist"><ul><li><p>Datos son privados</p></li><li><p>Parejas de clave-valor</p></li><li><p>Tipos primitivos de datos</p></li></ul></div></li><li><p>Almacenamiento interno</p><div class="ulist"><ul><li><p>Datos son privados</p></li><li><p>Memoria interna del dispositivo</p></li></ul></div></li><li><p>Almacenamiento externo</p><div class="ulist"><ul><li><p>Datos son públicos</p></li><li><p>Almacenamiento externo del dispositivo (si tiene)</p></li></ul></div></li></ul></div></aside></section>
+<section id="_sqlite"><h2>SQLite</h2><div class="ulist"><ul><li><p>La plataforma Android proporciona la base de datos SQLite para el
+almacenamiento y consulta de datos estructurados</p></li><li><p>SQLite es un RDBMS escrito en lenguaje C y de muy pequeño
+tamaño (~275 KB)</p></li><li><p>SQLite es una base de datos standalone y transaccional,
+compatible con ACID</p></li></ul></div></section>
+<section id="_sqlite_2"><h2>SQLite</h2><div class="ulist"><ul><li><p>SQLite esta embebida en el sistema Android y se puede acceder a
+su funcionalidad a través de la API <code>android.database.sqlite</code> provista en el Android SDK</p></li><li><p><a href="https://www.sqlite.org/mostdeployed.html">Es la base de datos más usada en el mundo</a> (considerando que la usan smartphones, navegadores, TVs&#8230;&#8203;)</p></li></ul></div></section>
+<section id="_sqlite_3"><h2>SQLite</h2><div class="ulist"><ul><li><p>Para crear, actualizar y conectarse con una base de datos SQLite se utiliza una clase auxiliar provista por Android llamada <code>SQLiteOpenHelper</code></p></li><li><p><code>SQLiteOpenHelper</code> tiene un constructor y dos métodos abstractos <code>onCreate()</code> y <code>onUpgrade()</code> que deberemos implementar para crear y mantener la base de datos.</p></li></ul></div></section>
+<section><pre class="highlight listingblock"><code data-noescape class="kotlin language-kotlin">class DbHelper(context: Context, <i class="conum" data-value="1"></i><b>(1)</b>
+               name: String, <i class="conum" data-value="2"></i><b>(2)</b>
+               factory: SQLiteDatabase.CursorFactory?, <i class="conum" data-value="3"></i><b>(3)</b>
+               version: Int) <i class="conum" data-value="4"></i><b>(4)</b>
+    : SQLiteOpenHelper(context, name, factory, version) {
+
+    private val sqlCreate = "create table usuario (id INTEGER, nombre TEXT)"
+
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(sqlCreate)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS Usuarios")
+        db.execSQL(sqlCreate)
+    }
+}</code></pre>
+<aside class="notes"><div class="ulist"><ul><li><p><code>context</code>: Usado para ubicar el archivo de la base de datos</p></li><li><p><code>name</code>: Nombre de la base de datos</p></li><li><p><code>factory</code>: Usado para creación de cursores</p></li><li><p><code>version</code>: Versión de la base de datos (empezando en 1)</p></li></ul></div>
+<div class="paragraph"><p>Ver referencia en: <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper#SQLiteOpenHelper(android.content.Context,%20java.lang.String,%20android.database.sqlite.SQLiteDatabase.CursorFactory,%20int" class="bare">https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper#SQLiteOpenHelper(android.content.Context,%20java.lang.String,%20android.database.sqlite.SQLiteDatabase.CursorFactory,%20int</a>)</p></div></aside></section>
+<section id="_cómo_crear_una_bd"><h2>¿Cómo crear una BD?</h2></section>
 <section><div class="ulist"><ul><li><p>Fuentes:</p></li></ul></div>
 <div class="paragraph"><p>**</p></div>
 <aside class="notes"><div class="paragraph"><p>Para generar pdf incluir al final de la presentación lo siguiente: ?showNotes=separate-page&amp;print-pdf</p></div></aside></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {

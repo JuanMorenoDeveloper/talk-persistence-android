@@ -18,4 +18,87 @@ include::{partials}/footer.ad[]
 * SharedPreferences
 * Almacenamiento Interno/Externo
 
+[NOTE.speaker]
+====
+Alternativas para persistir datos en el dispositivo Android
+
+* SQLite
+
+** Datos son privados
+** Datos estructurados
+
+* SharedPreferences
+
+** Datos son privados
+** Parejas de clave-valor
+** Tipos primitivos de datos
+
+* Almacenamiento interno
+
+** Datos son privados
+** Memoria interna del dispositivo
+
+* Almacenamiento externo
+
+** Datos son públicos
+** Almacenamiento externo del dispositivo (si tiene)
+====
+
+== SQLite
+
+* La plataforma Android proporciona la base de datos SQLite para el
+almacenamiento y consulta de datos estructurados
+* SQLite es un RDBMS escrito en lenguaje C y de muy pequeño
+tamaño (~275 KB)
+* SQLite es una base de datos standalone y transaccional,
+compatible con ACID
+
+== SQLite
+
+* SQLite esta embebida en el sistema Android y se puede acceder a
+su funcionalidad a través de la API `android.database.sqlite` provista en el Android SDK
+
+* https://www.sqlite.org/mostdeployed.html[Es la base de datos más usada en el mundo] (considerando que la usan smartphones, navegadores, TVs...)
+
+== SQLite
+
+* Para crear, actualizar y conectarse con una base de datos SQLite se utiliza una clase auxiliar provista por Android llamada `SQLiteOpenHelper`
+* `SQLiteOpenHelper` tiene un constructor y dos métodos abstractos `onCreate()` y `onUpgrade()` que deberemos implementar para crear y mantener la base de datos.
+
+== !
+
+[source,kotlin]
+----
+class DbHelper(context: Context, //<1>
+               name: String, //<2>
+               factory: SQLiteDatabase.CursorFactory?, //<3>
+               version: Int) //<4>
+    : SQLiteOpenHelper(context, name, factory, version) {
+
+    private val sqlCreate = "create table usuario (id INTEGER, nombre TEXT)"
+
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(sqlCreate)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS Usuarios")
+        db.execSQL(sqlCreate)
+    }
+}
+----
+[NOTE.speaker]
+====
+* `context`: Usado para ubicar el archivo de la base de datos
+* `name`: Nombre de la base de datos
+* `factory`: Usado para creación de cursores
+* `version`: Versión de la base de datos (empezando en 1)
+
+Ver referencia en: https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper#SQLiteOpenHelper(android.content.Context,%20java.lang.String,%20android.database.sqlite.SQLiteDatabase.CursorFactory,%20int)
+====
+
+== ¿Cómo crear una BD?
+
+
+
 include::{partials}/self.ad[]
